@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD0A187025DD506E007703AB /* BWfilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A186F25DD506E007703AB /* BWfilter.swift */; };
 		CD20327C25DA4B9A00D3DE28 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD20327B25DA4B9A00D3DE28 /* AppDelegate.swift */; };
 		CD20327E25DA4B9A00D3DE28 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD20327D25DA4B9A00D3DE28 /* ViewController.swift */; };
 		CD20328025DA4B9B00D3DE28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD20327F25DA4B9B00D3DE28 /* Assets.xcassets */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CD0A186F25DD506E007703AB /* BWfilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BWfilter.swift; sourceTree = "<group>"; };
 		CD20327825DA4B9A00D3DE28 /* MacNB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacNB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD20327B25DA4B9A00D3DE28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD20327D25DA4B9A00D3DE28 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			children = (
 				CD20327B25DA4B9A00D3DE28 /* AppDelegate.swift */,
 				CD20327D25DA4B9A00D3DE28 /* ViewController.swift */,
+				CD0A186F25DD506E007703AB /* BWfilter.swift */,
 				CD20327F25DA4B9B00D3DE28 /* Assets.xcassets */,
 				CD20328125DA4B9B00D3DE28 /* Main.storyboard */,
 				CD20328425DA4B9B00D3DE28 /* Info.plist */,
@@ -132,6 +135,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD0A187025DD506E007703AB /* BWfilter.swift in Sources */,
 				CD20327E25DA4B9A00D3DE28 /* ViewController.swift in Sources */,
 				CD20327C25DA4B9A00D3DE28 /* AppDelegate.swift in Sources */,
 			);
