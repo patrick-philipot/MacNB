@@ -62,9 +62,69 @@ func applyFilter(to image: NSImage) -> NSImage? {
             pixel.green = pixelColor
             pixels[index] = pixel
             
-            // Atkinson
         }
     }
+    
+    // Atkinson
+    
+    struct Matrix {
+      let row: Int
+      let column: Int
+    }
+    
+    let AtkinsonMatrix = [
+      Matrix(row: 0, column: 1),
+      Matrix(row: 0, column: 2),
+      Matrix(row: 1, column: -1),
+      Matrix(row: 1, column: 0),
+      Matrix(row: 1, column: 1),
+      Matrix(row: 2, column: 0)
+    ]
+    
+    for y in 0..<height {
+        for x in 0..<width {
+            let index = y * width + x
+            var pixel = pixels[index]
+            
+            // lire la valeur de gris
+            let gray = pixel.red
+            
+            // quantification
+            let newValue = gray < 128 ? 0 : 255
+            
+            //affectation
+            pixel.red = UInt8(newValue)
+            pixel.blue = UInt8(newValue)
+            pixel.green = UInt8(newValue)
+            
+            // error
+            let err : Int = Int(gray) - newValue
+            
+            // 1/8ème de l'erreur à répartir sur les pixels voisins
+            let errDiv8 = Int8( err / 8)
+            
+            for neighbor in AtkinsonMatrix {
+              let row = y + neighbor.row
+              let column = x + neighbor.column
+              // return row * width + column
+                var neighborPixel = try? pixels[row * width + column]
+                let newGray : Int = Int(neighborPixel?.red ?? 0) + Int(errDiv8)
+                neighborPixel?.red = newGray > 255 ? 255 : UInt8(newGray)
+                neighborPixel?.blue = newGray > 255 ? 255 : UInt8(newGray)
+                neighborPixel?.green = newGray > 255 ? 255 : UInt8(newGray)
+                // UInt8(_component + apportionedError > 255 ? 255 : _component + apportionedError)
+              
+            }
+            
+            
+            
+
+
+            
+        }
+    }
+    
+    
    
     let end = DispatchTime.now()   // <<<<<<<<<<   end time
     
