@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -712,11 +713,11 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="06z-lJ-C6Q">
-                                <rect key="frame" x="10" y="10" width="1000" height="700"/>
+                                <rect key="frame" x="10" y="9" width="1000" height="700"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" image="femmes1000x700" id="l3h-bU-G5T"/>
                             </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bVf-be-kwM">
-                                <rect key="frame" x="3" y="722" width="140" height="32"/>
+                                <rect key="frame" x="4" y="721" width="138" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="126" id="CKo-8p-CKC"/>
                                 </constraints>
@@ -752,6 +753,19 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="buzzButton:" target="XfG-lQ-9wD" id="UeR-1J-pbd"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iqk-lu-jjM">
+                                <rect key="frame" x="415" y="722" width="110" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="126" id="pdq-Jp-6tC"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Atkinson" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Q78-8a-eB3">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="AtkinsonButton:" target="XfG-lQ-9wD" id="eZs-xw-c8q"/>
                                 </connections>
                             </button>
                         </subviews>

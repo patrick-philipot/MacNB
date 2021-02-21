@@ -61,6 +61,8 @@ func applyFilter(to image: NSImage) -> NSImage? {
             pixel.blue = pixelColor
             pixel.green = pixelColor
             pixels[index] = pixel
+            
+            // Atkinson
         }
     }
    
