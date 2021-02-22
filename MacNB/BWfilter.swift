@@ -81,6 +81,22 @@ func applyFilter(to image: NSImage) -> NSImage? {
       Matrix(row: 2, column: 0)
     ]
     
+    // additionne ou soustrait selon le signe de u2
+    // retourne un Uint8
+    func addTwoUint8(u1: UInt8, r8:Int8)->UInt8 {
+        var addResult :(partialValue: UInt8, overflow: Bool)
+        var u2: UInt8
+        if r8 < 0 {
+            u2 = UInt8(-r8)
+            addResult = u1.subtractingReportingOverflow(u2)
+            return addResult.overflow ? 0 : addResult.partialValue
+        } else {
+            u2 = UInt8(r8)
+            addResult = u1.addingReportingOverflow(u2)
+            return addResult.overflow ? 255 : addResult.partialValue
+        }
+    }
+    
     for y in 0..<height {
         for x in 0..<width {
             let index = y * width + x
@@ -97,6 +113,8 @@ func applyFilter(to image: NSImage) -> NSImage? {
             pixel.blue = UInt8(newValue)
             pixel.green = UInt8(newValue)
             
+            pixels[index] = pixel
+            
             // error
             let err : Int = Int(gray) - newValue
             
@@ -106,25 +124,18 @@ func applyFilter(to image: NSImage) -> NSImage? {
             for neighbor in AtkinsonMatrix {
               let row = y + neighbor.row
               let column = x + neighbor.column
-              // return row * width + column
-                var neighborPixel = try? pixels[row * width + column]
-                let newGray : Int = Int(neighborPixel?.red ?? 0) + Int(errDiv8)
-                neighborPixel?.red = newGray > 255 ? 255 : UInt8(newGray)
-                neighborPixel?.blue = newGray > 255 ? 255 : UInt8(newGray)
-                neighborPixel?.green = newGray > 255 ? 255 : UInt8(newGray)
-                // UInt8(_component + apportionedError > 255 ? 255 : _component + apportionedError)
-              
+              guard row >= 0 && row < height && column >= 0 && column < width else {continue}
+              // only valid values
+              var neighborPixel = pixels[row * width + column]
+              let oldGray = neighborPixel.red
+                let newGray = addTwoUint8(u1: oldGray, r8: errDiv8)
+                neighborPixel.red = newGray
+                neighborPixel.blue = newGray
+                neighborPixel.green = newGray
+                pixels[row * width + column] = neighborPixel
             }
-            
-            
-            
-
-
-            
         }
     }
-    
-    
    
     let end = DispatchTime.now()   // <<<<<<<<<<   end time
     
