@@ -8,7 +8,7 @@
 
 import Cocoa
 
-func applyFilter(to image: NSImage) -> NSImage? {
+func applyFilter(to image: NSImage, withAtkinsonDithering: Bool = false) -> NSImage? {
     print("ApplyFilter")
     
     var imageRect = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
@@ -65,77 +65,80 @@ func applyFilter(to image: NSImage) -> NSImage? {
         }
     }
     
-    // Atkinson
+    // Atkinson ?
     
-    struct Matrix {
-      let row: Int
-      let column: Int
-    }
-    
-    let AtkinsonMatrix = [
-      Matrix(row: 0, column: 1),
-      Matrix(row: 0, column: 2),
-      Matrix(row: 1, column: -1),
-      Matrix(row: 1, column: 0),
-      Matrix(row: 1, column: 1),
-      Matrix(row: 2, column: 0)
-    ]
-    
-    // additionne ou soustrait selon le signe de u2
-    // retourne un Uint8
-    func addTwoUint8(u1: UInt8, r8:Int8)->UInt8 {
-        var addResult :(partialValue: UInt8, overflow: Bool)
-        var u2: UInt8
-        if r8 < 0 {
-            u2 = UInt8(-r8)
-            addResult = u1.subtractingReportingOverflow(u2)
-            return addResult.overflow ? 0 : addResult.partialValue
-        } else {
-            u2 = UInt8(r8)
-            addResult = u1.addingReportingOverflow(u2)
-            return addResult.overflow ? 255 : addResult.partialValue
+    if withAtkinsonDithering {
+        struct Matrix {
+          let row: Int
+          let column: Int
         }
-    }
-    
-    for y in 0..<height {
-        for x in 0..<width {
-            let index = y * width + x
-            var pixel = pixels[index]
-            
-            // lire la valeur de gris
-            let gray = pixel.red
-            
-            // quantification
-            let newValue = gray < 128 ? 0 : 255
-            
-            //affectation
-            pixel.red = UInt8(newValue)
-            pixel.blue = UInt8(newValue)
-            pixel.green = UInt8(newValue)
-            
-            pixels[index] = pixel
-            
-            // error
-            let err : Int = Int(gray) - newValue
-            
-            // 1/8ème de l'erreur à répartir sur les pixels voisins
-            let errDiv8 = Int8( err / 8)
-            
-            for neighbor in AtkinsonMatrix {
-              let row = y + neighbor.row
-              let column = x + neighbor.column
-              guard row >= 0 && row < height && column >= 0 && column < width else {continue}
-              // only valid values
-              var neighborPixel = pixels[row * width + column]
-              let oldGray = neighborPixel.red
-                let newGray = addTwoUint8(u1: oldGray, r8: errDiv8)
-                neighborPixel.red = newGray
-                neighborPixel.blue = newGray
-                neighborPixel.green = newGray
-                pixels[row * width + column] = neighborPixel
+        
+        let AtkinsonMatrix = [
+          Matrix(row: 0, column: 1),
+          Matrix(row: 0, column: 2),
+          Matrix(row: 1, column: -1),
+          Matrix(row: 1, column: 0),
+          Matrix(row: 1, column: 1),
+          Matrix(row: 2, column: 0)
+        ]
+        
+        // additionne ou soustrait selon le signe de u2
+        // retourne un Uint8
+        func addTwoUint8(u1: UInt8, r8:Int8)->UInt8 {
+            var addResult :(partialValue: UInt8, overflow: Bool)
+            var u2: UInt8
+            if r8 < 0 {
+                u2 = UInt8(-r8)
+                addResult = u1.subtractingReportingOverflow(u2)
+                return addResult.overflow ? 0 : addResult.partialValue
+            } else {
+                u2 = UInt8(r8)
+                addResult = u1.addingReportingOverflow(u2)
+                return addResult.overflow ? 255 : addResult.partialValue
+            }
+        }
+        
+        for y in 0..<height {
+            for x in 0..<width {
+                let index = y * width + x
+                var pixel = pixels[index]
+                
+                // lire la valeur de gris
+                let gray = pixel.red
+                
+                // quantification
+                let newValue = gray < 128 ? 0 : 255
+                
+                //affectation
+                pixel.red = UInt8(newValue)
+                pixel.blue = UInt8(newValue)
+                pixel.green = UInt8(newValue)
+                
+                pixels[index] = pixel
+                
+                // error
+                let err : Int = Int(gray) - newValue
+                
+                // 1/8ème de l'erreur à répartir sur les pixels voisins
+                let errDiv8 = Int8( err / 8)
+                
+                for neighbor in AtkinsonMatrix {
+                  let row = y + neighbor.row
+                  let column = x + neighbor.column
+                  guard row >= 0 && row < height && column >= 0 && column < width else {continue}
+                  // only valid values
+                  var neighborPixel = pixels[row * width + column]
+                  let oldGray = neighborPixel.red
+                    let newGray = addTwoUint8(u1: oldGray, r8: errDiv8)
+                    neighborPixel.red = newGray
+                    neighborPixel.blue = newGray
+                    neighborPixel.green = newGray
+                    pixels[row * width + column] = neighborPixel
+                }
             }
         }
     }
+    
    
     let end = DispatchTime.now()   // <<<<<<<<<<   end time
     
