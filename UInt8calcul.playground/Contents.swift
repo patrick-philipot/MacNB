@@ -61,7 +61,9 @@ for y in 0..<height {
         for neighbor in AtkinsonMatrix {
           let row = y + neighbor.row
           let column = x + neighbor.column
-            guard row >= 0 && row < height && column >= 0 && column < width else {continue}
+            guard row >= 0 && row < height && column >= 0 && column < width else {
+                print("......", terminator: ", ")
+                continue}
             print("(\(column), \(row))", terminator: ", ")
         }
        print("")

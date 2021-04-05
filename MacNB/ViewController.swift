@@ -14,6 +14,7 @@ class ViewController: NSViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        // sampleIMG.imageScaling = .scaleAxesIndependently
     }
 
     override var representedObject: Any? {
@@ -23,23 +24,33 @@ class ViewController: NSViewController {
     }
     @IBOutlet weak var sampleIMG: NSImageView!
     
-
+    // Bouton Atkinson, convertit l'image couleur
+    // en image composée de pixels soit noir, soit blanc
+    // mais avec un tramage Atkinson
     @IBAction func AtkinsonButton(_ sender: NSButton) {
         sampleIMG.image = applyFilter(to: sampleIMG.image!, withAtkinsonDithering: true)
+        savePNG(image: sampleIMG.image!)
     }
     
-    
+    // Bouton Choisir Buzz
     @IBAction func buzzButton(_ sender: NSButton) {
         sampleIMG.image = NSImage(named: "buz")
     }
     
+    // Bouton N&B, chaque pixel de couleur
+    // devient soit noir, soir blanc
+    @IBAction func onlyNB(_ sender: NSButton) {
+        print("Uniquement des pixels blanc ou noir")
+        sampleIMG.image = nbFilter(to: sampleIMG.image!)
+    }
     
+    // Bouton Convertir en N&B
     @IBAction func testBTN(_ sender: NSButton) {
         print("Bouton TEST")
         sampleIMG.image = applyFilter(to: sampleIMG.image!)
-
     }
     
+    //  Bouton Choisir une image
     @IBAction func selectImage(_ sender: NSButton) {
         let dialog = NSOpenPanel();
 
@@ -60,6 +71,7 @@ class ViewController: NSViewController {
                 // /Users/ourcodeworld/Desktop/tiger.jpeg
                 print(path)
                 sampleIMG.image = NSImage(byReferencingFile: path)
+                sampleIMG.imageScaling = .scaleProportionallyUpOrDown
                 
             }
             
@@ -69,6 +81,12 @@ class ViewController: NSViewController {
         }
     }
     
+    func savePNG(image: NSImage) -> Bool {
+        let myURL: URL = URL(fileURLWithPath: "export.png")
+            let imageRep = NSBitmapImageRep(data: image.tiffRepresentation!)
+            let pngData = imageRep?.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
+            return (try!(pngData?.write(to: myURL)) != nil)
+        }
     
     
 }
